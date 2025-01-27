@@ -100,6 +100,8 @@ This structured approach to data preparation ensured that our dataset was well-b
 
 This section outlines the implementation of three object detection models: **YOLOv5**, **YOLOv8**, and **YOLOv11n (Nano)**. Each model was trained from scratch to detect and localize waste bags in images. The training process involved preparing datasets, configuring model architectures, and optimizing performance through training and evaluation. Below, we expand on the architecture and training process for each model.
 
+Each of the models was trained leveraging google Colab's free gpu hardware.
+
 ### 1. **YOLOv5**
 
 **Architecture:**
