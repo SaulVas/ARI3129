@@ -154,7 +154,7 @@ Each model's implementation was evaluated based on key metrics such as mAP, Prec
 
 ## Evaluation
 
-### Yolov5
+### Yolov5
 
 #### **Model Summary and Training Results**
 
@@ -175,56 +175,40 @@ These results indicate that the model performs well in precision across most cla
 
 #### **Analysis of Results Plots**
 
-1. **Correlogram of Labels**  
-   ![Correlogram of Labels](results/v5/labels_correlogram.jpg)
+1. **Correlogram of Labels**![Correlogram of Labels](results/v5/labels_correlogram.jpg)
 
    - The distribution of \(x\), \(y\), width, and height features shows that most bounding boxes are centered around the middle of the images, with relatively consistent sizes.
    - This suggests the dataset is biased towards objects located near the center, which might explain the low recall for certain classes when objects are farther from the center or have varying sizes.
-
-2. **Precision-Recall Curve**  
-   ![Precision-Recall Curve](results/v5/PR_curve.png)
+2. **Precision-Recall Curve**![Precision-Recall Curve](results/v5/PR_curve.png)
 
    - This curve shows that the "Mixed" class has the highest \(mAP@0.5\) (\(0.995\)), indicating effective detection for this class.
    - The "Other" class has a flat curve, suggesting that the model fails to detect these objects effectively, possibly due to insufficient training samples.
-
-3. **Class Distribution and Bounding Box Distribution**  
-   ![Class Distribution](results/v5/labels.jpg)
+3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/v5/labels.jpg)
 
    - The bar chart shows class imbalance, with the "Recycle" class having significantly more instances than "Other."
    - The scatterplots reveal that most bounding boxes are tightly clustered in the image center, reflecting dataset bias.
-
-4. **F1-Confidence Curve**  
-   ![F1-Confidence Curve](results/v5/F1_curve.png)
+4. **F1-Confidence Curve**![F1-Confidence Curve](results/v5/F1_curve.png)
 
    - The F1 score peaks around a confidence threshold of \(0.053\), with the "Mixed" class achieving the highest score.
    - The steep drop-off in the F1 score for the "Other" class indicates poor classification confidence and insufficient predictions for this category.
-
-5. **Precision-Confidence Curve**  
-   ![Precision-Confidence Curve](results/v5/P_curve.png)
+5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/v5/P_curve.png)
 
    - Precision is high across all classes for confidence thresholds above \(0.5\), especially for "Recycle" and "Mixed."
    - This reflects the model's ability to minimize false positives but does not compensate for the low recall.
-
-6. **Recall-Confidence Curve**  
-   ![Recall-Confidence Curve](results/v5/R_curve.png)
+6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/v5/R_curve.png)
 
    - Recall for most classes drops sharply as confidence thresholds increase.
    - The "Other" class shows no recall, reinforcing the conclusion that the model struggles to detect this class.
-
-7. **Confusion Matrix**  
-   ![Confusion Matrix](results/v5/confusion_matrix.png)
+7. **Confusion Matrix**![Confusion Matrix](results/v5/confusion_matrix.png)
 
    - The matrix highlights misclassifications, with some overlap between "Organic" and "Recycle" classes.
    - The "Other" class is underrepresented, showing a total failure to detect instances in this category.
-
-8. **Training Metrics**  
-   ![Training Metrics](results/v5/results.png)
+8. **Training Metrics**![Training Metrics](results/v5/results.png)
 
    - Loss metrics (box, object, and classification losses) show a consistent decline, indicating successful optimization during training.
    - Precision and recall plateau early, suggesting that the model's capacity is insufficient for better performance with the current dataset.
+9. **Validation Predictions**![Validation Predictions](results/v5/val_batch0_pred.jpg)
 
-9. **Validation Predictions**  
-   ![Validation Predictions](results/v5/val_batch0_pred.jpg)
    - Predictions are accurate for "Mixed" and "Recycle" classes but miss certain objects entirely, especially those of the "Other" class.
 
 #### **Discussion and Recommendations**
@@ -233,10 +217,88 @@ These results indicate that the model performs well in precision across most cla
 
    - High precision across all classes indicates that the model is effective at minimizing false positives.
    - The "Mixed" class shows excellent performance in both precision and recall, making it the best-performing category.
-
 2. **Weaknesses**:
+
    - Recall is significantly lower than precision for most classes, indicating that the model fails to detect a large number of objects.
    - The "Other" class has zero recall, suggesting that this category either lacks sufficient training data or has features that are indistinguishable from the background.
+
+### Yolov8
+
+#### **Model Summary and Training Results**
+
+- **Training Time**: The model completed 50 epochs in **0.189 hours** (~11 minutes).
+- The YOLOv8 model achieved the following results:
+  - Precision (P): **0.877**
+  - Recall (R): **0.979**
+  - F1 Score (F1): **0.925**
+  - \(mAP@0.5\): **0.98**
+  - \(mAP@0.5:0.95\): **0.863**
+- Class-wise performance:
+  - **Organic**: \(P = 0.959), \(R = 1), \(mAP@0.5 = 0.995)
+  - **Recycle**: \(P = 0.831), \(R = 0.914), \(mAP@0.5 = 0.935)
+  - **Mixed**: \(P = 0.907), \(R = 1), \(mAP@0.5 = 0.995)
+  - **Other**: \(P = 0.811), \(R = 1), \(mAP@0.5 = 0.995)
+
+These results indicate that the model performs well in precision across most classes but struggles with recall and overall localization accuracy, as reflected in the low mAP scores.
+
+#### **Analysis of Results Plots**
+
+1. **Correlogram of Labels**![Correlogram of Labels](results/v8/labels_correlogram.jpg)
+
+   - Same for all
+2. **Precision-Recall Curve**![Precision-Recall Curve](results/v8/PR_curve.png)
+
+   * This curve shows that both the "Mixed" and "Organic" classes achieved the highest (mAP@0.5) (0.995), indicating highly effective detection for these categories.
+   * The "Other" class has shown a significant improvement compared to YOLOv5, with an (mAP@0.5) of (0.995), suggesting the model's ability to detect these objects has improved significantly.
+   * The overall (mAP@0.5) of (0.980) for all classes demonstrates a substantial enhancement in detection performance, highlighting YOLOv8's superior ability to balance precision and recall across all categories.
+3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/v8/labels.jpg)
+
+   - Same for all
+4. **F1-Confidence Curve**![F1-Confidence Curve](results/v8/F1_curve.png)
+
+   * The F1 score peaks around a confidence threshold of (0.322), indicating that the optimal balance between precision and recall is achieved at a higher threshold compared to YOLOv5.
+   * The "Mixed" and "Organic" classes achieve the highest F1 scores, demonstrating strong classification confidence across a range of confidence thresholds.
+   * The "Other" class, while showing a significant improvement over YOLOv5, still exhibits instability with a noticeable drop in performance at mid-range confidence levels, indicating challenges in detecting this class consistently.
+5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/v8/P_curve.png)
+
+   * Precision is high across all classes for confidence thresholds above (0.5), with the "Recycle" and "Mixed" classes maintaining consistent precision across the range.
+   * The model achieves perfect precision at a confidence threshold of (0.939), indicating a strong ability to minimize false positives.
+   * Despite the high precision values, further evaluation is needed to ensure that recall is not compromised, as precision alone does not fully reflect the model's detection performance.
+6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/v8/R_curve.png)
+
+   * Recall for most classes drops gradually as confidence thresholds increase, with the "Mixed" class maintaining the highest recall across the confidence range.
+   * The "Other" class continues to show poor recall, indicating that the model struggles to detect this class consistently.
+   * Overall, the model achieves strong recall at lower confidence levels, but the sharp decline at higher thresholds suggests challenges in maintaining detection consistency across all classes.
+7. **Confusion Matrix**![Confusion Matrix](results/v8/confusion_matrix_normalized.png)
+
+   * The matrix indicates an improvement in classification performance, with fewer misclassifications between the "Organic" and "Recycle" classes compared to YOLOv5.
+   * The "Other" class still exhibits detection challenges, but there is a slight improvement in the detection rate compared to the previous model.
+   * The normalized confusion matrix shows that the model classifies the "Mixed" class with perfect accuracy, while minor misclassifications persist for the "Organic" and "Recycle" categories.
+   * Background detection remains an area requiring improvement, as some instances are still misclassified as foreground objects.
+8. **Training Metrics**![Training Metrics](results/v8/results.png)
+
+   * Loss metrics (box, classification, and DFL losses) show a steady decline, indicating effective learning and optimization during the training process.
+   * Precision and recall show fluctuations but generally trend upwards, demonstrating the model's improving ability to correctly identify and classify objects.
+9. **Validation Predictions**![Validation Predictions](results/v8/val_batch0_pred.jpg)
+
+   * Predictions are significantly more accurate, with higher confidence scores, particularly for the "Organic" and "Mixed" classes.
+   * The model correctly identifies most instances, with improved localization and fewer missed detections compared to YOLOv5.
+   * Some overlapping or clustered objects still pose challenges, as the model occasionally assigns lower confidence scores or fails to distinguish individual instances accurately.
+   * Compared to YOLOv5, YOLOv8 demonstrates better detection performance across different lighting conditions and angles, indicating enhanced generalization.
+
+#### **Discussion and Recommendations**
+
+1. **Strengths**:
+
+   * The model achieves high precision and recall across most classes, indicating a strong ability to both detect and correctly classify objects.
+   * The "Mixed" and "Organic" classes demonstrate excellent performance, with near-perfect detection and minimal misclassification.
+   * Improved generalization across varying conditions, with better handling of different lighting and angles compared to YOLOv5.
+   * The model effectively balances precision and recall, achieving significantly higher overall mAP scores.
+2. **Weaknesses**:
+
+   * The "Other" class still exhibits relatively lower performance, indicating challenges in differentiating it from other classes or the background.
+   * Some minor misclassifications persist between "Organic" and "Recycle," suggesting a need for additional training data or enhanced augmentation strategies.
+   * Although the overall recall has improved, further fine-tuning may be required to ensure consistent detection across all object sizes and environments.
 
 ## References
 
