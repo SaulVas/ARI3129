@@ -22,16 +22,6 @@ The integration of generative AI, specifically ChatGPT, into this project raised
 
 ## 5. Improvements, Errors and Contributions
 
-Generative AI, specifically ChatGPT, played a key role in various aspects of the project, contributing significantly to code development, debugging, documentation, and data analysis. Its ability to provide instant feedback and structured suggestions helped streamline the workflow and improve project efficiency.
-
-ChatGPT was instrumental in helping us get started with the coding process and addressing challenges that arose during the training and evaluation of the YOLO models (YOLOv5, YOLOv8, and YOLOv11). It provided valuable assistance in writing initial scripts and debugging errors. Its iterative responses allowed us to troubleshoot compatibility issues and optimize model performance efficiently.
-
-ChatGPT greatly assisted in structuring and refining the project documentation. It helped in organizing content, improving clarity, and suggesting additional details that enhanced the overall quality of the report. It provided ideas on what to include, refined our writing for better readability, and ensured a logical flow of information. This made the documentation process more efficient and allowed us to present technical concepts in a more accessible manner.
-
-Data analysis was another critical area where ChatGPT contributed. It helped us interpret model outputs, analyze key performance metrics, and generate meaningful insights from evaluation results. By processing outputs such as confusion matrices and mAP scores, ChatGPT helped highlight trends and identify areas for improvement. Additionally, it assisted in visualizing data through recommendations for effective presentation methods.
-
-Despite its usefulness, ChatGPT had some limitations. It sometimes provided generic or contextually inaccurate solutions, requiring manual adjustments. Additionally, over-reliance on AI suggestions had to be avoided to ensure project-specific requirements were met accurately.
-
 ## 6. Individual Reflection
 
 ## 7. References and List of Resources Used
