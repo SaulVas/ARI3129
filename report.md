@@ -326,25 +326,25 @@ The Yolov11 model shows strong precision and recall overall, with a high mAP@50 
 
 1. **Correlogram of Labels**![Correlogram of Labels](results/V11/labels_correlogram.jpg)
 
-* The scatter plot distributions for (x), (y), width, and height features indicate that bounding boxes are predominantly centred around the middle of the images, with slight variations.
-* The clustering suggests a dataset bias towards centrally located objects with uniform sizes, which could contribute to challenges in detecting objects that are off-centre or vary significantly in scale.
+ * The scatter plot distributions for (x), (y), width, and height features indicate that bounding boxes are predominantly centred around the middle of the images, with slight variations.
+ * The clustering suggests a dataset bias towards centrally located objects with uniform sizes, which could contribute to challenges in detecting objects that are off-centre or vary significantly in scale.
 
 2. **Precision-Recall Curve**![Precision-Recall Curve](results/V11/PR_curve.png)
 
    * This curve shows that the “Mixed” class has the highest mAP@0.5 (0.995), indicating effective detection for this class.
    * The “Recycle” class has a less steep curve, reflecting lower mAP@0.5 (0.881), suggesting challenges in consistent detection, potentially due to overlapping features with other classes.
-   *      
+          
 3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/V11/labels.jpg)
 
-* The bar chart highlights class imbalance, with the “Recycle” class containing significantly more instances compared to the “Other” class.
-* The scatterplots indicate that most bounding boxes are tightly clustered around the image centre, demonstrating a potential dataset bias towards centrally located objects.
+ * The bar chart highlights class imbalance, with the “Recycle” class containing significantly more instances compared to the “Other” class.
+ * The scatterplots indicate that most bounding boxes are tightly clustered around the image centre, demonstrating a potential dataset bias towards centrally located objects.
 
   
 4. **F1-Confidence Curve**![F1-Confidence Curve](results/V11/F1_curve.png)
 
    * The F1 score peaks around a confidence threshold of 0.063, with the “Mixed” class achieving the highest performance.
    * The sharp decline in the F1 score for the “Other” class highlights low classification confidence and limited predictions for this category.
-   * 
+     
 5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/V11/PR_curve.png)
 
    * Precision is consistently high across all classes for confidence thresholds above 0.5, with “Mixed” and “Organic” achieving the best results.
