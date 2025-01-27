@@ -100,7 +100,15 @@ This structured approach to data preparation ensured that our dataset was well-b
 
 Upon analyzing the dataset we found that although we had equal amounts of photos per trash type, the actual count of objects within said images was not equal. This can be seen in the below chart.
 
-<img src="results/dataset_distribution.png.png" alt="dataset distribution chart" width="200" />
+<img src="results/dataset_distribution.png" alt="dataset distribution chart" width="200" />
+
+### Datasets
+
+The final dataset can be found at:
+
+- https://universe.roboflow.com/bachelor-of-ai/ari3129-dataset
+
+- https://github.com/SaulVas/ARI3129
 
 ## Implementation of the Object Detectors
 
@@ -425,7 +433,7 @@ The Yolov11 model shows strong precision and recall overall, with a high mAP@50 
 
 6. **Confusion Matrix**
 
-   <img src="results/V11/confusion_matrix.png" alt="Confusion Matrix" width="300" />
+   <img src="results/V11/confusion_matrix_normalized.png" alt="Confusion Matrix" width="300" />
 
    - The matrix reveals notable misclassifications, particularly between the "Organic" and "Recycle" classes.
    - The "Other" class remains underrepresented, with the model failing to correctly classify any instances in this category.
@@ -439,7 +447,7 @@ The Yolov11 model shows strong precision and recall overall, with a high mAP@50 
 
 8. **Validation Predictions**
 
-   <img src="rresults/V11/val_batch0_pred.jpg" alt="Validation Predictions" width="200" />
+   <img src="results/V11/val_batch0_pred.jpg" alt="Validation Predictions" width="200" />
 
    - Predictions are generally accurate for the "Recycle" and "Mixed" classes but fail to detect several objects, particularly those belonging to the "Other" class, highlighting model limitations.
 
