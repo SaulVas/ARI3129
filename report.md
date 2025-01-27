@@ -300,6 +300,87 @@ These results indicate that the model performs well in precision across most cla
    * Some minor misclassifications persist between "Organic" and "Recycle," suggesting a need for additional training data or enhanced augmentation strategies.
    * Although the overall recall has improved, further fine-tuning may be required to ensure consistent detection across all object sizes and environments.
 
+
+
+
+### Yolov11
+
+#### **Model Summary and Training Results**
+
+- **Training Time**: The model completed 50 epochs in **0.175 hours** (~10 minutes).
+- The YOLOv8 model achieved the following results:
+  - Precision (P): **0.873**
+  - Recall (R): **0.922**
+  - F1 Score (F1): **0.6857**
+  - \(mAP@0.5\): **0.963**
+  - \(mAP@0.5:0.95\): **0.815**
+- Class-wise performance:
+  - **Organic**: \(P = 0.852), \(R = 957), \(mAP@0.5 = 0.981)
+  - **Recycle**: \(P = 0.696)), \(R = 0.889), \(mAP@0.5 = 0.882)
+  - **Mixed**: \(P = 0.944), \(R = 1), \(mAP@0.5 = 0.995)
+  - **Other**: \(P = 1.0), \(R = 0.844), \(mAP@0.5 = 0.995)
+
+The Yolov11 model shows strong precision and recall overall, with a high mAP@50 but slightly lower consistency across thresholds. While “Mixed” and “Other” classes perform nearly perfectly, the “Recycling” class struggles with lower precision and mAP@0.5, indicating room for improvement.
+
+#### **Analysis of Results Plots**
+
+1. **Correlogram of Labels**![Correlogram of Labels](results/V11/labels_correlogram.jpg)
+
+* The scatter plot distributions for (x), (y), width, and height features indicate that bounding boxes are predominantly centred around the middle of the images, with slight variations.
+* The clustering suggests a dataset bias towards centrally located objects with uniform sizes, which could contribute to challenges in detecting objects that are off-centre or vary significantly in scale.
+
+2. **Precision-Recall Curve**![Precision-Recall Curve](results/V11/PR_curve.png)
+
+   * This curve shows that the “Mixed” class has the highest mAP@0.5 (0.995), indicating effective detection for this class.
+   * The “Recycle” class has a less steep curve, reflecting lower mAP@0.5 (0.881), suggesting challenges in consistent detection, potentially due to overlapping features with other classes.
+   *      
+3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/V11/labels.jpg)
+
+* The bar chart highlights class imbalance, with the “Recycle” class containing significantly more instances compared to the “Other” class.
+* The scatterplots indicate that most bounding boxes are tightly clustered around the image centre, demonstrating a potential dataset bias towards centrally located objects.
+
+  
+4. **F1-Confidence Curve**![F1-Confidence Curve](results/V11/F1_curve.png)
+
+   * The F1 score peaks around a confidence threshold of 0.063, with the “Mixed” class achieving the highest performance.
+   * The sharp decline in the F1 score for the “Other” class highlights low classification confidence and limited predictions for this category.
+   * 
+5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/V11/PR_curve.png)
+
+   * Precision is consistently high across all classes for confidence thresholds above 0.5, with “Mixed” and “Organic” achieving the best results.
+   * This highlights the model’s effectiveness in reducing false positives but does not address the relatively low recall for some classes.
+
+6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/V11/R_curve.png)
+
+   * Recall for most classes declines sharply as confidence thresholds increase, reflecting the model’s sensitivity to higher thresholds.
+   * The “Other” class exhibits no recall, underscoring the model’s inability to detect this category effectively.
+     
+7. **Confusion Matrix**![Confusion Matrix](results/V11/confusion_matrix.png)
+
+   * The matrix reveals notable misclassifications, particularly between the “Organic” and “Recycle” classes.
+   * The “Other” class remains underrepresented, with the model failing to correctly classify any instances in this category.
+  
+8. **Training Metrics**![Training Metrics](results/V11/results.png)
+
+   * The loss metrics (box, classification, and DFL losses) demonstrate a steady decline, reflecting effective optimisation during training.
+   * Precision and recall stabilise early, implying that the model may have reached its capacity limits with the given dataset.
+
+9. **Validation Predictions**![Validation Predictions](rresults/V11/val_batch0_pred.jpg)
+
+   * Predictions are generally accurate for the “Recycle” and “Mixed” classes but fail to detect several objects, particularly those belonging to the “Other” class, highlighting model limitations.
+
+#### **Discussion and Recommendations**
+
+1. **Strengths**:
+
+   * The Yolov11 model demonstrates high precision across most classes, effectively reducing false positives.
+   * Outstanding performance for the “Mixed” class, with high mAP and F1 scores, making it the most reliably detected category.
+     
+2. **Weaknesses**:
+
+   * Recall is notably lower than precision across classes, indicating the model misses a significant number of objects during detection.
+   * The “Other” class shows no recall, likely due to insufficient training data or features that are too similar to other categories or the background.
+
 ## References
 
 [1] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You Only Look Once: Unified, Real-Time Object Detection,” Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2016.
