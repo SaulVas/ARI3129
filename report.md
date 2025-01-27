@@ -17,7 +17,7 @@ Object detection is a key task in computer vision, involving the simultaneous cl
 
 The YOLO series of models has revolutionised object detection since its introduction in 2016. Unlike traditional methods, which involve separate processes for region proposal and classification, YOLO frames detection as a single regression problem, predicting bounding boxes and class probabilities in one pass through the network. This unified approach ensures speed and efficiency, enabling YOLO to process images at impressive frame rates while maintaining competitive accuracy [2]. Over the years, enhancements in the YOLO architecture have introduced features such as anchor boxes, multi-scale predictions, and better loss functions, which have improved its robustness and scalability [3].
 
-Recent iterations like YOLOv5, YOLOv8, and YOLOv11 have further refined the model’s capabilities. YOLOv5 incorporates automated anchor generation and mosaic data augmentation, making it highly adaptable to diverse datasets [4]. YOLOv8, on the other hand, integrates advanced feature aggregation and attention mechanisms, boosting its performance on complex datasets [5]. The YOLOv11 version builds on these advancements by adopting state-of-the-art training strategies and expanding its ability to handle challenging scenarios, such as overlapping objects and occlusions [6]. These models are widely regarded for their ability to balance computational efficiency with high detection accuracy, making them ideal for time-sensitive applications.
+Recent iterations like YOLOv5, YOLOv8, and YOLOv11 have further refined the model's capabilities. YOLOv5 incorporates automated anchor generation and mosaic data augmentation, making it highly adaptable to diverse datasets [4]. YOLOv8, on the other hand, integrates advanced feature aggregation and attention mechanisms, boosting its performance on complex datasets [5]. The YOLOv11 version builds on these advancements by adopting state-of-the-art training strategies and expanding its ability to handle challenging scenarios, such as overlapping objects and occlusions [6]. These models are widely regarded for their ability to balance computational efficiency with high detection accuracy, making them ideal for time-sensitive applications.
 
 In addition to detection algorithms, effective dataset preparation is critical to achieving reliable results. Roboflow, a widely used platform in the computer vision community, simplifies the end-to-end dataset creation pipeline. Its powerful annotation tools leverage AI to speed up labeling while maintaining accuracy, a crucial step in training high-performing models. Furthermore, Roboflow offers built-in data augmentation techniques, such as flipping, rotation, brightness adjustments, and cropping, to increase dataset diversity and improve model generalization. These augmentations simulate real-world conditions, ensuring that models trained on augmented datasets are robust across various scenarios [7].
 
@@ -95,6 +95,12 @@ Once the annotation and augmentation process was completed, the dataset was expo
 Exporting the dataset in multiple YOLO versions provided flexibility for experimentation and comparison in the subsequent training phase. These versions were selected to explore the improvements in detection accuracy and performance across different iterations of the YOLO framework.
 
 This structured approach to data preparation ensured that our dataset was well-balanced, diverse, and ready for object detection model training. The comprehensive cleaning, annotation, and augmentation steps helped create a robust dataset capable of supporting accurate waste bag detection in varied environments.
+
+### Reflection and Bias
+
+Upon analyzing the dataset we found that although we had equal amounts of photos per trash type, the actual count of objects within said images was not equal. This can be seen in the below chart.
+
+<img src="results/dataset_distribution.png.png" alt="dataset distribution chart" width="200" />
 
 ## Implementation of the Object Detectors
 
@@ -175,47 +181,65 @@ These results indicate that the model performs well in precision across most cla
 
 #### **Analysis of Results Plots**
 
-1. **Correlogram of Labels**![Correlogram of Labels](results/v5/labels_correlogram.jpg)
+1. **Correlogram of Labels**
+
+   <img src="results/v5/labels_correlogram.jpg" alt="Correlogram of Labels" width="200" />
 
    - The distribution of \(x\), \(y\), width, and height features shows that most bounding boxes are centered around the middle of the images, with relatively consistent sizes.
    - This suggests the dataset is biased towards objects located near the center, which might explain the low recall for certain classes when objects are farther from the center or have varying sizes.
 
-2. **Precision-Recall Curve**![Precision-Recall Curve](results/v5/PR_curve.png)
+2. **Precision-Recall Curve**
+
+   <img src="results/v5/PR_curve.png" alt="Precision-Recall Curve" width="200" />
 
    - This curve shows that the "Mixed" class has the highest \(mAP@0.5\) (\(0.995\)), indicating effective detection for this class.
    - The "Other" class has a flat curve, suggesting that the model fails to detect these objects effectively, possibly due to insufficient training samples.
 
-3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/v5/labels.jpg)
+3. **Class Distribution and Bounding Box Distribution**
+
+   <img src="results/v5/labels.jpg" alt="Class Distribution" width="200" />
 
    - The bar chart shows class imbalance, with the "Recycle" class having significantly more instances than "Other."
    - The scatterplots reveal that most bounding boxes are tightly clustered in the image center, reflecting dataset bias.
 
-4. **F1-Confidence Curve**![F1-Confidence Curve](results/v5/F1_curve.png)
+4. **F1-Confidence Curve**
+
+   <img src="results/v5/F1_curve.png" alt="F1-Confidence Curve" width="200" />
 
    - The F1 score peaks around a confidence threshold of \(0.053\), with the "Mixed" class achieving the highest score.
    - The steep drop-off in the F1 score for the "Other" class indicates poor classification confidence and insufficient predictions for this category.
 
-5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/v5/P_curve.png)
+5. **Precision-Confidence Curve**
+
+   <img src="results/v5/P_curve.png" alt="Precision-Confidence Curve" width="200" />
 
    - Precision is high across all classes for confidence thresholds above \(0.5\), especially for "Recycle" and "Mixed."
    - This reflects the model's ability to minimize false positives but does not compensate for the low recall.
 
-6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/v5/R_curve.png)
+6. **Recall-Confidence Curve**
+
+   <img src="results/v5/R_curve.png" alt="Recall-Confidence Curve" width="200" />
 
    - Recall for most classes drops sharply as confidence thresholds increase.
    - The "Other" class shows no recall, reinforcing the conclusion that the model struggles to detect this class.
 
-7. **Confusion Matrix**![Confusion Matrix](results/v5/confusion_matrix.png)
+7. **Confusion Matrix**
+
+   <img src="results/v5/confusion_matrix.png" alt="Confusion Matrix" width="300" />
 
    - The matrix highlights misclassifications, with some overlap between "Organic" and "Recycle" classes.
    - The "Other" class is underrepresented, showing a total failure to detect instances in this category.
 
-8. **Training Metrics**![Training Metrics](results/v5/results.png)
+8. **Training Metrics**
+
+   <img src="results/v5/results.png" alt="Training Metrics" width="200" />
 
    - Loss metrics (box, object, and classification losses) show a consistent decline, indicating successful optimization during training.
    - Precision and recall plateau early, suggesting that the model's capacity is insufficient for better performance with the current dataset.
 
-9. **Validation Predictions**![Validation Predictions](results/v5/val_batch0_pred.jpg)
+9. **Validation Predictions**
+
+   <img src="results/v5/val_batch0_pred.jpg" alt="Validation Predictions" width="200" />
 
    - Predictions are accurate for "Mixed" and "Recycle" classes but miss certain objects entirely, especially those of the "Other" class.
 
@@ -252,56 +276,74 @@ These results indicate that the model performs well in precision across most cla
 
 #### **Analysis of Results Plots**
 
-1. **Correlogram of Labels**![Correlogram of Labels](results/v8/labels_correlogram.jpg)
+1. **Correlogram of Labels**
+
+   <img src="results/v8/labels_correlogram.jpg" alt="Correlogram of Labels" width="200" />
 
    - Same for all
 
-2. **Precision-Recall Curve**![Precision-Recall Curve](results/v8/PR_curve.png)
+2. **Precision-Recall Curve**
+
+   <img src="results/v8/PR_curve.png" alt="Precision-Recall Curve" width="200" />
 
    - This curve shows that both the "Mixed" and "Organic" classes achieved the highest (mAP@0.5) (0.995), indicating highly effective detection for these categories.
    - The "Other" class has shown a significant improvement compared to YOLOv5, with an (mAP@0.5) of (0.995), suggesting the model's ability to detect these objects has improved significantly.
    - The overall (mAP@0.5) of (0.980) for all classes demonstrates a substantial enhancement in detection performance, highlighting YOLOv8's superior ability to balance precision and recall across all categories.
 
-3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/v8/labels.jpg)
+3. **Class Distribution and Bounding Box Distribution**
+
+   <img src="results/v8/labels.jpg" alt="Class Distribution" width="200" />
 
    - Same for all
 
-4. **F1-Confidence Curve**![F1-Confidence Curve](results/v8/F1_curve.png)
+4. **F1-Confidence Curve**
+
+   <img src="results/v8/F1_curve.png" alt="F1-Confidence Curve" width="200" />
 
    - The F1 score peaks around a confidence threshold of (0.322), indicating that the optimal balance between precision and recall is achieved at a higher threshold compared to YOLOv5.
    - The "Mixed" and "Organic" classes achieve the highest F1 scores, demonstrating strong classification confidence across a range of confidence thresholds.
    - The "Other" class, while showing a significant improvement over YOLOv5, still exhibits instability with a noticeable drop in performance at mid-range confidence levels, indicating challenges in detecting this class consistently.
 
-5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/v8/P_curve.png)
+5. **Precision-Confidence Curve**
+
+   <img src="results/v8/P_curve.png" alt="Precision-Confidence Curve" width="200" />
 
    - Precision is high across all classes for confidence thresholds above (0.5), with the "Recycle" and "Mixed" classes maintaining consistent precision across the range.
    - The model achieves perfect precision at a confidence threshold of (0.939), indicating a strong ability to minimize false positives.
    - Despite the high precision values, further evaluation is needed to ensure that recall is not compromised, as precision alone does not fully reflect the model's detection performance.
 
-6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/v8/R_curve.png)
+6. **Recall-Confidence Curve**
+
+   <img src="results/v8/R_curve.png" alt="Recall-Confidence Curve" width="200" />
 
    - Recall for most classes drops gradually as confidence thresholds increase, with the "Mixed" class maintaining the highest recall across the confidence range.
    - The "Other" class continues to show poor recall, indicating that the model struggles to detect this class consistently.
    - Overall, the model achieves strong recall at lower confidence levels, but the sharp decline at higher thresholds suggests challenges in maintaining detection consistency across all classes.
 
-7. **Confusion Matrix**![Confusion Matrix](results/v8/confusion_matrix_normalized.png)
+7. **Confusion Matrix**
+
+   <img src="results/v8/confusion_matrix_normalized.png" alt="Confusion Matrix" width="300" />
 
    - The matrix indicates an improvement in classification performance, with fewer misclassifications between the "Organic" and "Recycle" classes compared to YOLOv5.
    - The "Other" class still exhibits detection challenges, but there is a slight improvement in the detection rate compared to the previous model.
    - The normalized confusion matrix shows that the model classifies the "Mixed" class with perfect accuracy, while minor misclassifications persist for the "Organic" and "Recycle" categories.
    - Background detection remains an area requiring improvement, as some instances are still misclassified as foreground objects.
 
-8. **Training Metrics**![Training Metrics](results/v8/results.png)
+8. **Training Metrics**
+
+   <img src="results/v8/results.png" alt="Training Metrics" width="200" />
 
    - Loss metrics (box, classification, and DFL losses) show a steady decline, indicating effective learning and optimization during the training process.
    - Precision and recall show fluctuations but generally trend upwards, demonstrating the model's improving ability to correctly identify and classify objects.
 
-9. **Validation Predictions**![Validation Predictions](results/v8/val_batch0_pred.jpg)
+9. **Validation Predictions**
 
-   - Predictions are significantly more accurate, with higher confidence scores, particularly for the "Organic" and "Mixed" classes.
-   - The model correctly identifies most instances, with improved localization and fewer missed detections compared to YOLOv5.
-   - Some overlapping or clustered objects still pose challenges, as the model occasionally assigns lower confidence scores or fails to distinguish individual instances accurately.
-   - Compared to YOLOv5, YOLOv8 demonstrates better detection performance across different lighting conditions and angles, indicating enhanced generalization.
+   <img src="results/v8/val_batch0_pred.jpg" alt="Validation Predictions" width="200" />
+
+- Predictions are significantly more accurate, with higher confidence scores, particularly for the "Organic" and "Mixed" classes.
+- The model correctly identifies most instances, with improved localization and fewer missed detections compared to YOLOv5.
+- Some overlapping or clustered objects still pose challenges, as the model occasionally assigns lower confidence scores or fails to distinguish individual instances accurately.
+- Compared to YOLOv5, YOLOv8 demonstrates better detection performance across different lighting conditions and angles, indicating enhanced generalization.
 
 #### **Discussion**
 
@@ -335,65 +377,83 @@ These results indicate that the model performs well in precision across most cla
   - **Mixed**: \(P = 0.944), \(R = 1), \(mAP@0.5 = 0.995)
   - **Other**: \(P = 1.0), \(R = 0.844), \(mAP@0.5 = 0.995)
 
-The Yolov11 model shows strong precision and recall overall, with a high mAP@50 but slightly lower consistency across thresholds. While “Mixed” and “Other” classes perform nearly perfectly, the “Recycling” class struggles with lower precision and mAP@0.5, indicating room for improvement.
+The Yolov11 model shows strong precision and recall overall, with a high mAP@50 but slightly lower consistency across thresholds. While "Mixed" and "Other" classes perform nearly perfectly, the "Recycling" class struggles with lower precision and mAP@0.5, indicating room for improvement.
 
 #### **Analysis of Results Plots**
 
-1. **Correlogram of Labels**![Correlogram of Labels](results/V11/labels_correlogram.jpg)
+1. **Correlogram of Labels**
+
+   <img src="results/V11/labels_correlogram.jpg" alt="Correlogram of Labels" width="200" />
 
 - The scatter plot distributions for (x), (y), width, and height features indicate that bounding boxes are predominantly centred around the middle of the images, with slight variations.
 - The clustering suggests a dataset bias towards centrally located objects with uniform sizes, which could contribute to challenges in detecting objects that are off-centre or vary significantly in scale.
 
-2. **Precision-Recall Curve**![Precision-Recall Curve](results/V11/PR_curve.png)
+1. **Precision-Recall Curve**
 
-   - This curve shows that the “Mixed” class has the highest mAP@0.5 (0.995), indicating effective detection for this class.
-   - The “Recycle” class has a less steep curve, reflecting lower mAP@0.5 (0.881), suggesting challenges in consistent detection, potentially due to overlapping features with other classes.
+   <img src="results/V11/PR_curve.png" alt="Precision-Recall Curve" width="200" />
 
-3. **Class Distribution and Bounding Box Distribution**![Class Distribution](results/V11/labels.jpg)
+   - This curve shows that the "Mixed" class has the highest mAP@0.5 (0.995), indicating effective detection for this class.
+   - The "Recycle" class has a less steep curve, reflecting lower mAP@0.5 (0.881), suggesting challenges in consistent detection, potentially due to overlapping features with other classes.
 
-- The bar chart highlights class imbalance, with the “Recycle” class containing significantly more instances compared to the “Other” class.
+2. **Class Distribution and Bounding Box Distribution**
+
+   <img src="results/V11/labels.jpg" alt="Class Distribution" width="200" />
+
+- The bar chart highlights class imbalance, with the "Recycle" class containing significantly more instances compared to the "Other" class.
 - The scatterplots indicate that most bounding boxes are tightly clustered around the image centre, demonstrating a potential dataset bias towards centrally located objects.
 
-4. **F1-Confidence Curve**![F1-Confidence Curve](results/V11/F1_curve.png)
+3. **F1-Confidence Curve**
 
-   - The F1 score peaks around a confidence threshold of 0.063, with the “Mixed” class achieving the highest performance.
-   - The sharp decline in the F1 score for the “Other” class highlights low classification confidence and limited predictions for this category.
+   <img src="results/V11/F1_curve.png" alt="F1-Confidence Curve" width="200" />
 
-5. **Precision-Confidence Curve**![Precision-Confidence Curve](results/V11/PR_curve.png)
+   - The F1 score peaks around a confidence threshold of 0.063, with the "Mixed" class achieving the highest performance.
+   - The sharp decline in the F1 score for the "Other" class highlights low classification confidence and limited predictions for this category.
 
-   - Precision is consistently high across all classes for confidence thresholds above 0.5, with “Mixed” and “Organic” achieving the best results.
-   - This highlights the model’s effectiveness in reducing false positives but does not address the relatively low recall for some classes.
+4. **Precision-Confidence Curve**
 
-6. **Recall-Confidence Curve**![Recall-Confidence Curve](results/V11/R_curve.png)
+   <img src="results/V11/PR_curve.png" alt="Precision-Confidence Curve" width="200" />
 
-   - Recall for most classes declines sharply as confidence thresholds increase, reflecting the model’s sensitivity to higher thresholds.
-   - The “Other” class exhibits no recall, underscoring the model’s inability to detect this category effectively.
+   - Precision is consistently high across all classes for confidence thresholds above 0.5, with "Mixed" and "Organic" achieving the best results.
+   - This highlights the model's effectiveness in reducing false positives but does not address the relatively low recall for some classes.
 
-7. **Confusion Matrix**![Confusion Matrix](results/V11/confusion_matrix.png)
+5. **Recall-Confidence Curve**
 
-   - The matrix reveals notable misclassifications, particularly between the “Organic” and “Recycle” classes.
-   - The “Other” class remains underrepresented, with the model failing to correctly classify any instances in this category.
+   <img src="results/V11/R_curve.png" alt="Recall-Confidence Curve" width="200" />
 
-8. **Training Metrics**![Training Metrics](results/V11/results.png)
+   - Recall for most classes declines sharply as confidence thresholds increase, reflecting the model's sensitivity to higher thresholds.
+   - The "Other" class exhibits no recall, underscoring the model's inability to detect this category effectively.
+
+6. **Confusion Matrix**
+
+   <img src="results/V11/confusion_matrix.png" alt="Confusion Matrix" width="300" />
+
+   - The matrix reveals notable misclassifications, particularly between the "Organic" and "Recycle" classes.
+   - The "Other" class remains underrepresented, with the model failing to correctly classify any instances in this category.
+
+7. **Training Metrics**
+
+   <img src="results/V11/results.png" alt="Training Metrics" width="200" />
 
    - The loss metrics (box, classification, and DFL losses) demonstrate a steady decline, reflecting effective optimisation during training.
    - Precision and recall stabilise early, implying that the model may have reached its capacity limits with the given dataset.
 
-9. **Validation Predictions**![Validation Predictions](rresults/V11/val_batch0_pred.jpg)
+8. **Validation Predictions**
 
-   - Predictions are generally accurate for the “Recycle” and “Mixed” classes but fail to detect several objects, particularly those belonging to the “Other” class, highlighting model limitations.
+   <img src="rresults/V11/val_batch0_pred.jpg" alt="Validation Predictions" width="200" />
+
+   - Predictions are generally accurate for the "Recycle" and "Mixed" classes but fail to detect several objects, particularly those belonging to the "Other" class, highlighting model limitations.
 
 #### **Discussion**
 
 1. **Strengths**:
 
    - The Yolov11 model demonstrates high precision across most classes, effectively reducing false positives.
-   - Outstanding performance for the “Mixed” class, with high mAP and F1 scores, making it the most reliably detected category.
+   - Outstanding performance for the "Mixed" class, with high mAP and F1 scores, making it the most reliably detected category.
 
 2. **Weaknesses**:
 
    - Recall is notably lower than precision across classes, indicating the model misses a significant number of objects during detection.
-   - The “Other” class shows no recall, likely due to insufficient training data or features that are too similar to other categories or the background.
+   - The "Other" class shows no recall, likely due to insufficient training data or features that are too similar to other categories or the background.
 
 ### Comparison
 
@@ -403,19 +463,19 @@ Overall, **YOLOv8** stands out as the most balanced model, offering the best tra
 
 ## References
 
-[1] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, “You Only Look Once: Unified, Real-Time Object Detection,” Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2016.
+[1] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, "You Only Look Once: Unified, Real-Time Object Detection," Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2016.
 
-[2] J. Redmon and A. Farhadi, “YOLO9000: Better, Faster, Stronger,” Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2017.
+[2] J. Redmon and A. Farhadi, "YOLO9000: Better, Faster, Stronger," Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition, 2017.
 
-[3] G. Jocher et al., “ultralytics/yolov5: v6.2 - YOLOv5 Classification Models, Apple M1, Reproducibility, ClearML and Deci.ai integrations,” Zenodo, 2022.
+[3] G. Jocher et al., "ultralytics/yolov5: v6.2 - YOLOv5 Classification Models, Apple M1, Reproducibility, ClearML and Deci.ai integrations," Zenodo, 2022.
 
-[4] J. Terven and D. Cordova-Esparza, “A Comprehensive Review of YOLO Architectures in Computer Vision: From YOLOv1 to YOLOv8 and YOLO-NAS,” arXiv preprint arXiv:2304.00501, 2023.
+[4] J. Terven and D. Cordova-Esparza, "A Comprehensive Review of YOLO Architectures in Computer Vision: From YOLOv1 to YOLOv8 and YOLO-NAS," arXiv preprint arXiv:2304.00501, 2023.
 
-[5] M. Hussain, “YOLOv5, YOLOv8 and YOLOv10: The Go-To Detectors for Real-time Vision,” arXiv preprint arXiv:2407.02988, 2024.
+[5] M. Hussain, "YOLOv5, YOLOv8 and YOLOv10: The Go-To Detectors for Real-time Vision," arXiv preprint arXiv:2407.02988, 2024.
 
-[6] K. Singh et al., “YOLO and Its Variants: A Comprehensive Survey on Real-Time Object Detection,” IEEE Access, vol. 11, pp. 45678-45691, 2023.
+[6] K. Singh et al., "YOLO and Its Variants: A Comprehensive Survey on Real-Time Object Detection," IEEE Access, vol. 11, pp. 45678-45691, 2023.
 
-[7] “Roboflow Annotate: Label Images Faster Than Ever,” [Online]. Available: https://roboflow.com/annotate. [Accessed: 26-Jan-2025].
+[7] "Roboflow Annotate: Label Images Faster Than Ever," [Online]. Available: https://roboflow.com/annotate. [Accessed: 26-Jan-2025].
 
 [8] A. Bochkovskiy, C. Wang, and H. Liao, "YOLOv4: Optimal Speed and Accuracy of Object Detection," _arXiv preprint arXiv:2004.10934_, 2020. [Online]. Available: https://arxiv.org/abs/2004.10934
 
@@ -427,6 +487,6 @@ Overall, **YOLOv8** stands out as the most balanced model, offering the best tra
 
 [12] YOLOv11, "YOLOv11 GitHub Repository and Documentation," _(assumed source, if public or custom)_.
 
-## Resources
+## Resources
 
 OpenAI's ChatGPT 4o Model
